@@ -6,18 +6,20 @@ import React from 'react'
  * @return: class
  */
 export default function WithLog(Comp) {
-  return class componentName extends React.Component {
+  class logWrapper extends React.Component {
     componentDidMount() {
       console.log(`组件${Comp.name}被创建了,创建时间是：${Date.now()}`);
     }
-
     componentWillUnmount() {
       console.log(`组件${Comp.name}被销毁了,销毁时间是：${Date.now()}`);
     }
-
     render() {
-      return <Comp {...this.props} />
+      const { forwardRef, ...rest } = this.props;
+      return <Comp ref={forwardRef} {...rest} />
     }
   }
 
+  return React.forwardRef((props, ref) => {
+    return <logWrapper forwardRef={ref} {...props} />
+  })
 }
