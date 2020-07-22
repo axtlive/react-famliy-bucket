@@ -5,7 +5,7 @@ function isPlanObject(obj) {
   if (typeof obj !== 'object') {
     return false;
   }
-  return obj.getPrototypeOf(obj) === Object.prototype;
+  return Object.getPrototypeOf(obj) === Object.prototype;
 }
 
 export default isPlanObject;
