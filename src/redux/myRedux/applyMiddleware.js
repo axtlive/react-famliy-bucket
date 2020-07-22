@@ -1,6 +1,6 @@
 import compose from './compose';
 
-export default function (...middlewares) { // 传入所有的中间件
+export default function (...middlewares) { // 传入所有的中间件  最终返回更改了dispatch的store
   // 返回 一个函数，传入createStore 
   return function (createStore) {
     // 再返回一个函数 用于创建store，并传入reducer和initState
