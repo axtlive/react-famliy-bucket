@@ -1,19 +1,5 @@
-/**
- * description: 判断action是不是一个平面对象
- */
-function isPlanObject(obj) {
-  if (typeof obj !== 'object') {
-    return false;
-  }
-  return obj.getPrototypeOf(obj) === Object.prototype;
-}
-
-/**
- * description: 生成自定义长度的字符串
- */
-function createRandomStr(length) {
-  return Math.random().toString(36).substr(2, length).split('').join('.')
-}
+import ActionTypes from './utils/ActionTypes';
+import isPlanObject from './utils/isPlainObject'
 
 /**
  * description: 实现createStore
@@ -54,7 +40,8 @@ export default (reducer, defaultState) => {
 
   // 创建仓库的时候，需要进行一次dispatch，不然第一次getState获得到的是undefined
   dispatch({
-    type: Symbol()
+    type: ActionTypes.INIT()
+    // type: Symbol()
     // '@@redux/INIT'
     // createRandomStr(7)
   })
