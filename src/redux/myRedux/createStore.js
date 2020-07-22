@@ -4,7 +4,17 @@ import isPlanObject from './utils/isPlainObject'
 /**
  * description: 实现createStore
  */
-export default (reducer, defaultState) => {
+export default function createStore(reducer, defaultState, enhanced) {
+  if (typeof defaultState === 'function') {
+    // 如果第二个参数是函数，则表示，第二个参数是 applyMiddleware
+    // 把第二个参数赋值给第三个参数，把默认值设置为undefined
+    enhanced = defaultState;
+    defaultState = undefined;
+  }
+  if (typeof enhanced === 'function') {
+    // 如果enhanced是函数，则不走下面的创建store，把创建store的事交给 enhanced
+    return enhanced(createStore)(reducer, defaultState)
+  }
 
   let currentReducer = reducer;
   let currentState = defaultState;
