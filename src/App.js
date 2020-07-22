@@ -1,42 +1,43 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
-import RouteGard from './RouteGard'
+import * as Pages from './pages';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group'
 
-function PageA() {
-  return <h1>PageA</h1>
-}
-
-function PageB() {
-  return <h1>PageB</h1>
-}
-
-let count = 0;
+import 'animate.css';
+import './App.css';
 
 export default function App() {
   return (
-    <RouteGard
-      onBeforeChange={(prev, cur, action, callback, unBlock) => {
-        console.log('页面想要改变');
-        console.log(`页面从${prev.pathname}跳转到${cur.pathname},跳转方式是${action}`);
-        unBlock()
-        callback(true)
-      }}
-      onChange={(prvLocation, location, action, unListen) => {
-        count++;
-        console.log(`日志   count:${count},从${prvLocation.pathname}进入页面${location.pathname},进入方式是${action}`);
-        count === 5 && unListen()
-      }}>
-      <ul>
-        <li>
-          <Link to='/pageA'>页面A</Link>
-        </li>
-        <li>
-          <Link to="/pageB">页面B</Link>
-        </li>
-      </ul>
-      <Route path='/pageA' component={PageA} />
-      <Route path='/pageB' component={PageB} />
-    </RouteGard >
+    <div className="main">
+      <Router>
+        <Pages.NavBar />
+        <div className="page-container">
+          <Route path='/' exact >
+            {({ match }) => {
+              return (
+                <CSSTransition
+                  in={match ? true : false}
+                  timeout={800}
+                  className={{
+                    enter: "animated fast",
+                    enterActive: "fadeIn",
+                    exit: "animated fast",
+                    exitActive: "fadeOut"
+                  }}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <Pages.Home />
+                </CSSTransition>
+              )
+            }}
+          </Route>
+          <Route path='/news' exact component={Pages.News} />
+          <Route path='/personal' exact component={Pages.Personal} />
+        </div>
+      </Router>
+    </div>
+
   )
 }
 
