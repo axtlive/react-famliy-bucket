@@ -1,17 +1,20 @@
-import * as actionTypes from '../action/action-type';
+import { combineReducers } from 'redux';
+import loginReducer from './loginReducer';
+import userReducer from './userReducer';
 
-// 纯函数 返回一个新的状态
-export default function reducer(state, action) {
-  console.log('运行了reducer',state,action);
-  const newState = JSON.parse(JSON.stringify(state))
-  switch (action.type) {
-    case actionTypes.INCREASE:
-      return newState + 1;
-    case actionTypes.DECREASE:
-      return newState - 1;
-    case actionTypes.SETVAL:
-      return action.val;
-    default:
-      return newState;
-  }
-}
+
+// 不用combineReducers
+// export default (state = {}, action) {
+//   const newState = {
+//     loginUser: loginReducer(state.loginUser, action),
+//     user: userReducer(state.user, action)
+//   }
+//   return newState;
+// }
+
+
+// 用combineReducers
+export default combineReducers({
+  loginReducer,
+  userReducer
+})
