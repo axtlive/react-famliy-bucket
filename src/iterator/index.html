@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // const iterator = {
+    //   total: 3,
+    //   i: 1,
+    //   next() {
+    //     let obj = {
+    //       value: this.i > this.total ? undefined : this.i,
+    //       done: this.i > this.total ? true : false,
+    //     }
+    //     this.i++;
+    //     return obj;
+    //   }
+    // }
+
+
+    function asyncGetDate() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('你好')
+        }, 2000)
+      })
+    }
+
+
+    function* task() {
+      console.log('正在获取数据')
+      const data = yield asyncGetDate();
+      console.log('获取到的数据data为：', data)
+      const data2 = yield asyncGetDate();
+      console.log('获取到的数据data2为：', data2)
+      const data3 = yield 3;
+      console.log('获取到的数据data3为：', data3)
+    }
+
+
+    function run(func) {
+      const generator = func() // 将生成器函数执行得到一个生成器
+      next()
+
+      function next(nextVal) {
+        const res = generator.next(nextVal)
+        if (!res.done) { // 迭代没结束
+          const value = res.value;
+          // 返回值的value为一个promise
+          typeof value.then === 'function' ? value.then(data => next(data)) : next(value)
+        }
+      }
+    }
+
+    run(task)
+
+
+    function* task2() {
+      console.log('正在获取数据')
+      const data = yield asyncGetDate();
+      console.log('获取到的数据data为：', data)
+      const data2 = yield asyncGetDate();
+      console.log('获取到的数据data2为：', data2)
+      const data3 = yield 3;
+      console.log('获取到的数据data3为：', data3)
+    }
+
+    const generator2 = task2()
+    generator2.throw(new Error('错误 ')) // 会结束，并抛出错误
+    // 可以用try catch 
+    function* task2() {
+      try {
+        console.log('正在获取数据')
+        const data = yield asyncGetDate();
+        console.log('获取到的数据data为：', data)
+        const data2 = yield asyncGetDate();
+        console.log('获取到的数据data2为：', data2)
+        const data3 = yield 3;
+        console.log('获取到的数据data3为：', data3)
+      } catch (e) {
+        console.log('报错了');
+      }
+    }
+
+    generator2.return() // 会直接结束掉不往下走了
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function Person() {
+
+    }
+    const person = new Person()
+
+    Person.prototype === person.__proto__;
+    Person.prototype.constructor === Person;
+
+
+
+
+    class People {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+      toString() {
+        return '(' + this.x + ', ' + this.y + ')';
+      }
+    }
+
+    const people = new People()
+
+    people.constructor === People.prototype.constructor
+    people.toString === People.prototype.toString
+
+
+
+
+
+    const obj = {
+      name: 'axtlive',
+      age: '23',
+      work: 'front'
+    }
+
+    function getValue(key) {
+      return obj[key]
+    }
+
+    getValue(name) // 'axtlive',
+    getValue(age) // '23',
+    getValue(work) // 'front',
+  </script>
+</body>
+
+</html>

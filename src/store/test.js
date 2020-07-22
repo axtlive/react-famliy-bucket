@@ -1,7 +1,7 @@
 import store from './index';
-// import { changeAction } from './action/student/searchCondition'
-// import { setIsLoadingAction, fetchStudentAction } from './action/student/searchResult'
-import { fetchStudentAction } from './action/student/searchResult'
+import { increaseAction } from './action/counter'
+
+// import { changeAction } from './action/student/searchCondition';
 
 // const action = {
 //   key: '安徽',
@@ -9,7 +9,5 @@ import { fetchStudentAction } from './action/student/searchResult'
 // }
 
 // store.dispatch(changeAction(action))
-
-// store.dispatch(setIsLoadingAction(true))
-store.dispatch(fetchStudentAction())
+store.dispatch(increaseAction())
 // console.log(store.getState());
