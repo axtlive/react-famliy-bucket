@@ -34,6 +34,7 @@ export const setIsLoadingAction = isLoading => ({
  * @param {type} isLoading
  * @return: {}
  */
+// redux-thunk用法：
 export const fetchStudentAction = () => {
   return async (dispatch, getState) => {
     dispatch(setIsLoadingAction(true))
@@ -45,3 +46,34 @@ export const fetchStudentAction = () => {
     dispatch(setIsLoadingAction(false))
   }
 }
+
+// redux-promise用法1： 
+// 直接返回一个promise
+// export const fetchStudentAction = () => {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       const action = setStudentAndTotalAction([{ id: 1, name: 2 }, { id: 3, name: 4 }], 2)
+//       resolve(action)
+//     }, 2000);
+//   })
+// }
+
+// redux-promise用法2： 
+// 用 async await 结果返回action创建函数即可
+// export const fetchStudentAction = async (condition) => {
+//   const arr = await searchStudents(condition);
+//   const count = await searchStudentsCount({ key: condition.key, sex: condition.sex })
+//   return setStudentAndTotalAction(arr.data, count.total)
+// }
+
+// redux-promise用法3： 
+// 返回一个平面对象，但是payload里面返回一个promise
+// export const fetchStudentAction = async (condition) => {
+//   return {
+//     type: actionTypes.setStudentAndTotalAction,
+//     payload: searchStudents(condition).then(res => ({
+//       arr: res.data,
+//       total: res.total
+//     }))
+//   }
+// }
