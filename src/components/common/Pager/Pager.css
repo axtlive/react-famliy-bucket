@@ -1,0 +1,23 @@
+.item {
+  display: inline-block;
+  padding: 3px 8px;
+  border: 1px solid #ccc;
+  margin: 2px;
+  color: rgb(34, 187, 238);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.item.disabled {
+  cursor: not-allowed;
+  color: #eee;
+}
+
+.active {
+  border: none;
+  color: #fff;
+  background-color: rgb(34, 187, 238);
+  border: 1px solid #ccc;
+  cursor: auto;
+}
