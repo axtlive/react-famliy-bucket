@@ -1,9 +1,10 @@
 import store from "./index";
-import { fetchStudent } from "./action/student/searchResult";
+import { fetchStudentAction } from "./action/student/searchResult";
 import {
   asyncIncreaseAction,
   autoIncreaseAction,
   stopAutoIncreaseAction,
+  addAction,
 } from "./action/counter";
 
 // import { changeAction } from './action/student/searchCondition';
@@ -17,8 +18,12 @@ import {
 // store.dispatch(increaseAction())
 // console.log(store.getState());
 
+window.add = function(n) {
+  store.dispatch(addAction(n));
+};
+
 window.fetchStudent = function() {
-  store.dispatch(fetchStudent());
+  store.dispatch(fetchStudentAction());
 };
 
 window.asyncIncrease = function() {

@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 
-import reducer from "./reducer/index";
+import reducer from "./action/index";
 import rootSaga from "./saga";
 
 const sagaMid = createSagaMiddleware(); // 使用createSagaMiddleware方法创建了一个saga的中间件

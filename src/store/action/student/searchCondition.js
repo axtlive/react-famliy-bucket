@@ -1,11 +1,17 @@
-// action类型
-export const actionTypes = {
-  change: Symbol('change')
-}
+import { createActions, handleActions } from "redux-actions";
 
+export const { changeAction } = createActions({
+  CHANGE_ACTION: newCondition => newCondition,
+});
 
-// 根据一个新的查询条件，创建一个action
-export const changeAction = newCondition => ({
-  type: actionTypes.change,
-  payload: newCondition
-})
+export default handleActions(
+  {
+    [changeAction]: (state, { payload }) => ({ ...state, ...payload }),
+  },
+  {
+    key: "",
+    sex: -1,
+    page: 1,
+    limit: 10,
+  },
+);

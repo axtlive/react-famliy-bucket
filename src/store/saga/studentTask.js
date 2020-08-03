@@ -1,5 +1,5 @@
 import {
-  actionTypes,
+  fetchStudentAction,
   setIsLoadingAction,
 } from "../action/student/searchResult";
 import { takeEvery, put, select, cps } from "redux-saga/effects";
@@ -34,5 +34,5 @@ function* fetchStudent() {
 }
 
 export default function*() {
-  yield takeEvery(actionTypes.fetchStudent, fetchStudent);
+  yield takeEvery(fetchStudentAction.toString(), fetchStudent);
 }
