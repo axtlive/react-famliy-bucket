@@ -1,6 +1,6 @@
 import React from "react";
 import StudentSearchBar from "./StudentSearchBar";
-import { connect } from "react-redux";
+import { connect } from "../react-redux";
 import { changeAction } from "../store/action/student/searchCondition";
 import { fetchStudent } from "../store/action/student/searchResult";
 import StudentTable from "./StudentTable";
