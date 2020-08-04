@@ -4,12 +4,14 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 
+import StudentSearch from "./components/StudentSearch";
+
 // abc;会在Counter的mapStateToProps的第二个参数ownProps中
 
 export default function App() {
   return (
     <Provider store={store}>
-      <Counter abc={123} />
+      <StudentSearch />
     </Provider>
   );
 }
