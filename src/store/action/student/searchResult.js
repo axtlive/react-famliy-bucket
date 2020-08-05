@@ -1,8 +1,8 @@
 export const actionTypes = {
   // 设置查询结果和总数
-  setStudentAndTotal: Symbol("setStudentAndTotal"),
-  setIsLoading: Symbol("setIsLoading"),
-  fetchStudent: Symbol("fetchStudents"),
+  setStudentAndTotal: "SET_STUDENT_AND_TOTAL",
+  setIsLoading: "SET_IS_LOADING",
+  fetchStudent: "FETCH_STUDENT",
 };
 
 export function fetchStudent() {
