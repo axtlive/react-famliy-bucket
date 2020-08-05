@@ -1,6 +1,6 @@
 import React from "react";
 import StudentSearchBar from "./StudentSearchBar";
-import { connect, connectAdvanced } from "react-redux";
+import { connect } from "../react-redux";
 import { changeAction } from "../store/action/student/searchCondition";
 import { fetchStudent } from "../store/action/student/searchResult";
 import StudentTable from "./StudentTable";
@@ -38,36 +38,21 @@ mapStateToProps = state => ({
 const StuTable = connect(mapStateToProps)(StudentTable);
 
 // 连接Pager
-// mapStateToProps = state => ({
-//   current: state.students.searchCondition.page,
-//   total: state.students.searchResult.arr.total,
-//   limit: state.students.searchCondition.limit,
-//   panelNumber: 3,
-// });
-// mapDispatchToProps = dispatch => ({
-//   onPageChange: newPage => {
-//     // 触发change改变页码
-//     dispatch(changeAction(newPage));
-//     // 然后再次触发获取学生数据的action
-//     dispatch(fetchStudent());
-//   },
-// });
-
-function selectorFactory(dispatch) {
-  return (state, ownProps) => ({
-    current: state.students.searchCondition.page,
-    total: state.students.searchResult.arr.total,
-    limit: state.students.searchCondition.limit,
-    panelNumber: 5,
-    onPageChange: newPage => {
-      // 触发change改变页码
-      dispatch(changeAction(newPage));
-      // 然后再次触发获取学生数据的action
-      dispatch(fetchStudent());
-    },
-  });
-}
-const PagerTemp = connectAdvanced(selectorFactory)(Pager);
+mapStateToProps = state => ({
+  current: state.students.searchCondition.page,
+  total: state.students.searchResult.arr.total,
+  limit: state.students.searchCondition.limit,
+  panelNumber: 3,
+});
+mapDispatchToProps = dispatch => ({
+  onPageChange: newPage => {
+    // 触发change改变页码
+    dispatch(changeAction(newPage));
+    // 然后再次触发获取学生数据的action
+    dispatch(fetchStudent());
+  },
+});
+const PagerTemp = connect(mapStateToProps, mapDispatchToProps)(Pager);
 
 export default function StudentSearch() {
   return (

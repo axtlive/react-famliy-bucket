@@ -1,17 +1,35 @@
-# react-redux
+# react-redux 其他api
 
-- React: 组件化的UI界面处理方案
-- React-Router：根据地质匹配路由，最终渲染不同的组件
-- Redux：处理数据以及数据变化的方案（主要用于处理共享数据）
+> 详情参考： https://react-redux.js.org/api
 
-> 入股go一个组件，仅用于渲染一个UI界面，而没有状态（通常是一个函数组件），改组件叫做**展示组件** 
-> 如果一个组件，仅用于提供数据，没有任何属于自己的UI界面，则该组件叫做**容器组件**，容器组件纯粹是为了给其他组件提供数据
+## connect
 
+- mergeProps: 是个函数，有三个参数，
+  - 参数一：stateProps,该参数的值来自于mapStateToProps返回的值
+  - 参数二：dispatchProps，该参数的值来自于mapDispatchToProps返回的值
+  - 参数三：ownProps，来自于组件使用者传递的属性
+  - 返回值：是一个对象，该对象的属性最终会被传递到connect所包装的组件中
 
-react-redux库：连接redux和react
+- options：是一个配置对象
+  
+## connectAdvanced
 
-+ Provider组件：没有任何UI界面，该组件的作用是将redux的仓库放到一个上下文中
-+ connect：高阶组件，用于连接仓库和组件
-   - 细节一：如果对放回的容器组件加上额外的属性，则这些属性会直接传递到展示组件上
-   - mapStateToProps:
-     -  
+该函数和connect一样，也是用于连接React组件和Redux仓库的，只不过它的配置比connect少一些
+
+该函数需要传递两个参数：
+  - 参数一：selectorFactory
+    - 参数1：dispatch
+    - 参数2：factoryOptions，配置
+    - 返回值：是个函数 
+      -  参数1：state
+      -  参数2：ownProps
+      -  返回的是一个对象：该对象的属性最终，会成为包装的组件的属性
+  - 参数二：connectOptions
+
+## createProvider
+createProvider(字符串key)：通过一个唯一的key值创建一个Provider组件,在connect的时候传入那个options配置对象。
+
+```js
+const Provider1 = createProvider('key1');
+const Provider2 = createProvider('key2');
+```
