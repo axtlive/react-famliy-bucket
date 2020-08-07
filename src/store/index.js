@@ -2,7 +2,9 @@ import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { routerMiddleware } from "connected-react-router";
 
+import history from "./history";
 import reducer from "./reducer/index";
 import rootSaga from "./saga";
 
@@ -11,8 +13,11 @@ import rootSaga from "./saga";
 //   : null;
 
 const sagaMid = createSagaMiddleware(); // 使用createSagaMiddleware方法创建了一个saga的中间件
+const routerMid = routerMiddleware(history); // 路由中间件
 
-const enhancer = composeWithDevTools(applyMiddleware(sagaMid, logger));
+const enhancer = composeWithDevTools(
+  applyMiddleware(routerMid, sagaMid, logger),
+);
 
 const store = createStore(reducer, enhancer);
 

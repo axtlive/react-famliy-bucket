@@ -1,37 +1,24 @@
 import React from "react";
-// import Counter from "./components/Counter";
+import { Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+
+import Login from "./pages/Login.js";
+import Admin from "./pages/Admin.js";
 
 import store from "./store";
 
-import StudentSearch from "./components/StudentSearch";
-
-// abc;会在Counter的mapStateToProps的第二个参数ownProps中
+import history from "./store/history";
 
 export default function App() {
   return (
     <Provider store={store}>
-      <StudentSearch />
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Admin} />
+        </Switch>
+      </ConnectedRouter>
     </Provider>
   );
 }
-
-// import React, { Component } from 'react';
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// // import Layout from './components/layout';
-// import Login from './pages/Login.js';
-// import Admin from './pages/Admin.js';
-
-// export default class App extends Component {
-
-//   render() {
-//     return (
-//       <Router>
-//         <Switch>
-//           <Route path='/login' exact component={Login} />
-//           <Route path='/' component={Admin} />
-//         </Switch>
-//       </Router>
-//     )
-//   }
-// }
