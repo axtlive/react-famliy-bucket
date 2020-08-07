@@ -1,19 +1,11 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import Layout from './components/layout';
-import Login from './pages/Login.js';
-import Admin from './pages/Admin.js';
+import React from "react";
+import Counter from "./Counter";
 
-export default class App extends Component {
-
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route path='/login' exact component={Login} />
-          <Route path='/' component={Admin} />
-        </Switch>
-      </Router>
-    )
-  }
+export default function App() {
+  return (
+    <>
+      <h1>这是根组件</h1>
+      <Counter />
+    </>
+  );
 }
