@@ -20,6 +20,20 @@ function Counter(props) {
       >
         ------
       </button>
+      <button
+        onClick={() => {
+          props.onAsyncIncrease();
+        }}
+      >
+        异步+++++
+      </button>
+      <button
+        onClick={() => {
+          props.onAsyncDecrease();
+        }}
+      >
+        异步-----
+      </button>
       <div>
         <input type="number" ref={inp} />
         <button
@@ -50,10 +64,20 @@ const mapDispatchToProps = dispatch => ({
       type: "counter/decrease",
     });
   },
-  onAdd: n => {
+  onAdd: payload => {
     dispatch({
       type: "counter/add",
-      payload: n,
+      payload,
+    });
+  },
+  onAsyncIncrease: () => {
+    dispatch({
+      type: "counter/asyncIncrease",
+    });
+  },
+  onAsyncDecrease: () => {
+    dispatch({
+      type: "counter/asyncDecrease",
     });
   },
 });

@@ -1,7 +1,12 @@
 # dva
 
 > https://dvajs.com/
+
 > dva不仅仅是一个第三方库，更是一个框架，它主要整合了redux的相关内容，让我们处理数据更加容易，实际上，dva依赖了很多：react、react-router、redux、redux-saga、redux-redux、connected-react-router等。
+
+# 数据流向
+
+![avatar](https://zos.alipayobjects.com/rmsportal/PPrerEAKbIoDZYr.png)
 
 ## dva的使用
 
@@ -26,5 +31,7 @@ app.start("#root");
   + namespace：命名空间，该属性是一个字符串，字符串的值，会被作为仓库中的属性保存
   + state：该模型的默认值，
   + reducers：该属性配置为一个对象，对象中的每个方法就是一个reducer，dva约定，方法的名字就是action的类型
-  + effects
-  + subscriptions
+  + effects：处理副作用，底层是用使用redux-saga实现的，该属性配置为一个对象，对象中的每个方法均处理一个副作用，方法的名字就是匹配的action类型
+    - 参数1：action
+    - 参数2：封装好的saga/effects
+  + subscriptions：配置为一个对象，该对象中，可以写任意数量，任意名称的属性，每个属性是一个函数，这些函数会在模型加入到仓库中后立即执行。
