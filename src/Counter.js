@@ -1,8 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "dva";
 
 function Counter(props) {
   const inp = useRef();
+  useEffect(() => {
+    console.log("进来了");
+    return () => {
+      console.log("出去了");
+    };
+  }, []);
   return (
     <div>
       <h1>{props.number}</h1>

@@ -29,13 +29,13 @@ export default {
     // 在模型安装好后，这里面的方法会立即执行，且只执行一次
     fun1({ dispatch }) {
       // 这个obj里面有dispatch方法和history对象
-      console.log("fun1 execute");
+      console.log("subscriptions fun1 execute");
       window.onresize = () => {
         dispatch({ type: "increase" });
       };
     },
     fun2({ dispatch, history }) {
-      console.log("fun2 execute");
+      console.log("subscriptions fun2 execute");
       history.listen(() => {
         dispatch({ type: "decrease" });
       });

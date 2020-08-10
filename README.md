@@ -35,3 +35,21 @@ app.start("#root");
     - 参数1：action
     - 参数2：封装好的saga/effects
   + subscriptions：配置为一个对象，该对象中，可以写任意数量，任意名称的属性，每个属性是一个函数，这些函数会在模型加入到仓库中后立即执行。
+
+
+5. 在dva中要同步路由到仓库：
+   + 在调用dva函数时，配置history对象
+   + 使用ConnectedRouter提供路由上下文
+
+6. 配置
+   + history：同步到仓库的history对象
+   + initialState: 创建仓库时，使用的默认状态
+   + onError：当仓库的运行发生错误时，运行的函数
+   + onAction: 当触发action的时候运行的，即可以配置redux中间件
+      - 传入一个中间件对象
+      - 传入一个中间件数组
+   + onStateChange: 当仓库中的状态发生变化的时候运行的函数
+   + onReducer: 对模型中的reducer进行进一步封装
+   + onEffect：类似于对模型中的effect进行进一步封装
+   + extraReducers： 用于配置额外的reducer,它是一个对象，对象的每一个属性是一个方法，每个方法就是一个需要合并的reducer，方法名即属性名
+   + extraEnhancers: 它是用于封装createStore函数的，dva会将原来的仓库创建函数作为参数传递，返回一个新的用于创建仓库的函数。函数必须放到数组中
