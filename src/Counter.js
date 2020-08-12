@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { connect } from "dva";
+import { connect } from "./dva";
 
 function Counter(props) {
   const inp = useRef();
