@@ -17,6 +17,7 @@ export default {
     // dispatch({type:"increase"}) 即可，无需 dispatch({type:"counter/increase"})
     *asyncIncrease(action, { call, put }) {
       yield call(delay, 1000);
+      // throw new Error("模拟发生effects里发生错误");
       yield put({ type: "increase" });
       console.log("异步加");
     },

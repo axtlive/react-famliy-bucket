@@ -23,13 +23,6 @@ export default (opts = {}) => {
   const options = getOptions();
   return app;
 
-  function getOptions() {
-    const options = {
-      history: opts.history || createHashHistory(),
-    };
-    return options;
-  }
-
   /**
    * @description: 根据模型对象定义一个模型
    * @param {type} modelObj
@@ -55,6 +48,33 @@ export default (opts = {}) => {
     // 运行注册的一些subscription
     runSubscriptions(store.dispatch);
     render(selector, store);
+  }
+
+  // 获取Options
+  function getOptions() {
+    // 传入的相关配置
+    const options = {
+      history: opts.history || createHashHistory(),
+      initialState: opts.initialState === undefined ? {} : opts.initialState,
+      onError: opts.onError || (() => {}),
+      onStateChange: opts.onStateChange || (() => {}),
+      onReducer:
+        opts.onReducer ||
+        (reducer => (state, action) => reducer(state, action)),
+      onEffect: opts.onEffect || (() => {}),
+      extraReducers: opts.extraReducers || {},
+      extraEnhancers: opts.extraEnhancers || [],
+    };
+    if (opts.onAction) {
+      if (Array.isArray(opts.onAction)) {
+        options.onAction = opts.onAction;
+      } else {
+        options.onAction = [opts.onAction];
+      }
+    } else {
+      options.onAction = [];
+    }
+    return options;
   }
 
   // 运行subscription注册函数
@@ -90,9 +110,9 @@ export default (opts = {}) => {
 
   // 得到中间件
   function getMiddlewares() {
-    const sagaMid = createSagaMiddleware();
+    const sagaMid = createSagaMiddleware(); // saga中间件
     // getMiddlewares加一个静态方法,适当的时候调用（创建完store后调用）
-    getMiddlewares.runSaga = () => {
+    getMiddlewares.runSaga = store => {
       const generatorFuncs = []; // 保存副作用函数的数组
       for (const model of app._models) {
         // 改造put
@@ -105,25 +125,37 @@ export default (opts = {}) => {
               type: `${model.namespace}/${prop}`,
               generatorFunc: model.effects[prop],
               put,
+              model,
             });
           }
         }
       }
       sagaMid.run(function*() {
         for (const item of generatorFuncs) {
-          const func = function*(action) {
-            yield item.generatorFunc(action, {
-              ...sagaEffects,
-              put: item.put,
-            });
+          let func = function*(action) {
+            // 触发副作用的时候可能会出现错误，那就用配置里的onError来处理发生的错误
+            try {
+              yield item.generatorFunc(action, {
+                ...sagaEffects,
+                put: item.put,
+              });
+            } catch (e) {
+              options.onError(e, store.dispatch);
+            }
           };
+          // 如果有onEffects配置，则需要对func做进一步封装
+          if (options.onEffect) {
+            let oldEffect = func;
+            func = options.onEffect(oldEffect, sagaEffects, model, item.type);
+          }
           // 对应的action 用对应的generator函数处理
           yield sagaEffects.takeEvery(item.type, func);
         }
       });
     };
-    const routerMid = routerMiddleware(options.history);
-    return composeWithDevTools(applyMiddleware(routerMid, sagaMid));
+    const routerMid = routerMiddleware(options.history); // 路由中间件
+    const mids = [routerMid, sagaMid, ...options.onAction]; // 将所有的中间件放一起 然后应用中间件
+    return composeWithDevTools(applyMiddleware(...mids));
   }
 
   // 额外reducer
@@ -131,6 +163,7 @@ export default (opts = {}) => {
     return {
       router: connectRouter(options.history),
       "@@dva": (state = 0, action) => state,
+      ...opts.extraReducers,
     };
   }
 
@@ -145,12 +178,34 @@ export default (opts = {}) => {
     }
     // 把所有的reducer和额外的reducer进行合并后 使用combineReducers来合成一个大的reducer
     rootReducerObj = { ...rootReducerObj, ...getExtraReducer() };
-    const store = createStore(
-      combineReducers(rootReducerObj),
+    let rootReducer = combineReducers(rootReducerObj);
+    const oldReducer = rootReducer;
+    // 封装了含有onStateChange的大reducer函数
+    rootReducer = (state, action) => {
+      const newState = oldReducer(state, action);
+      options.onStateChange(newState);
+      return newState;
+    };
+    // 进一步封装含有onReducer的大reducer函数;
+    const oldReducer2 = rootReducer;
+    rootReducer = options.onReducer(oldReducer2);
+
+    // 如果有extraEnhancers 则把原来的createStore做修改后再创建仓库
+    let newCreateStore = createStore;
+    if (options.extraEnhancers) {
+      newCreateStore = options.extraEnhancers.reduce(
+        (fn1, fn2) => fn2(fn1),
+        createStore,
+      );
+    }
+
+    const store = newCreateStore(
+      rootReducer,
+      options.initialState,
       getMiddlewares(),
     );
-    // 创建完store，应用完中间件后，运行saga
-    getMiddlewares.runSaga();
+    // 创建完store，应用完中间件，在返回store之前要 运行saga
+    getMiddlewares.runSaga(store);
     window.store = store;
     return store;
   }
@@ -171,8 +226,9 @@ export default (opts = {}) => {
       reducer: (state = model.state, action) => {
         const temp = actionTypes.find(t => t.type === action.type);
         if (temp) {
-          // 类型匹配上了，运行对应的函数
-          return temp.reducer(state, action);
+          // 类型匹配上了，运行对应的函数,返回新的状态
+          const newState = temp.reducer(state, action);
+          return newState;
         } else {
           return state;
         }
