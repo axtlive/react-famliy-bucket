@@ -19,9 +19,21 @@ export default (opts = {}) => {
     router,
     _router: null, // 记录路由函数
     start,
+    use,
   };
-  const options = getOptions();
+  let options = getOptions();
   return app;
+
+  /**
+   * @description: 使用插件
+   * @param {type} plugin
+   */
+  function use(plugin) {
+    options = {
+      ...options,
+      ...plugin,
+    };
+  }
 
   /**
    * @description: 根据模型对象定义一个模型
@@ -61,7 +73,7 @@ export default (opts = {}) => {
       onReducer:
         opts.onReducer ||
         (reducer => (state, action) => reducer(state, action)),
-      onEffect: opts.onEffect || (() => {}),
+      onEffect: opts.onEffect,
       extraReducers: opts.extraReducers || {},
       extraEnhancers: opts.extraEnhancers || [],
     };
@@ -132,6 +144,7 @@ export default (opts = {}) => {
       }
       sagaMid.run(function*() {
         for (const item of generatorFuncs) {
+          // eslint-disable-next-line no-loop-func
           let func = function*(action) {
             // 触发副作用的时候可能会出现错误，那就用配置里的onError来处理发生的错误
             try {
@@ -163,7 +176,7 @@ export default (opts = {}) => {
     return {
       router: connectRouter(options.history),
       "@@dva": (state = 0, action) => state,
-      ...opts.extraReducers,
+      ...options.extraReducers,
     };
   }
 

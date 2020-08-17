@@ -10,59 +10,14 @@ import routerConfig from "./routerConfig";
 import counterModel from "./models/counter";
 import studentModel from "./models/student";
 
-const logger = store => next => action => {
-  console.log("老状态：", store.getState());
-  next(action);
-  console.log("新的状态：", store.getState());
-};
+import createLoading from "./dva/dva-loading";
 
 // 得到一个dva应用程序对象;
 const app = dva({
   history: createBrowserHistory(),
-  initialState: {
-    counter: 666,
-  },
-  onError: (err, dispatch) => {
-    console.log(err.message);
-    console.log(dispatch);
-  },
-  onAction: logger,
-  onStateChange: state => {
-    console.log(state.counter, "------------------------");
-  },
-  onReducer: reducer => {
-    return (state, action) => {
-      console.log("reducer即将被执行");
-      const newState = reducer(state, action);
-      return newState;
-    };
-  },
-  onEffect: (oldEffect, sagaEffects, model, actionType) => {
-    return function*(action) {
-      console.log("onEffect 即将执行副作用代码");
-      yield oldEffect(action);
-      console.log("onEffect 副作用代码执行完毕");
-    };
-  },
-  extraReducers: {
-    abc: (state = 123, action) => {
-      return state;
-    },
-    bcd: (state = 456, action) => {
-      return state;
-    },
-  },
-  extraEnhancers: [
-    createStore => (...args) => {
-      console.log("extraEnhancers 即将创建仓库1");
-      return createStore(...args);
-    },
-    createStore => (...args) => {
-      console.log("extraEnhancers 即将创建仓库2");
-      return createStore(...args);
-    },
-  ],
 });
+
+app.use(createLoading({ namespace: "ppp" }));
 
 // 在启动之前定义模型;
 app.model(counterModel);
