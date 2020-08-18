@@ -159,7 +159,12 @@ export default (opts = {}) => {
           // 如果有onEffects配置，则需要对func做进一步封装
           if (options.onEffect) {
             let oldEffect = func;
-            func = options.onEffect(oldEffect, sagaEffects, model, item.type);
+            func = options.onEffect(
+              oldEffect,
+              sagaEffects,
+              item.model,
+              item.type,
+            );
           }
           // 对应的action 用对应的generator函数处理
           yield sagaEffects.takeEvery(item.type, func);
