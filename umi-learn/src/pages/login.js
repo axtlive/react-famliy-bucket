@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function() {
+export default function login() {
   return (
     <div>
-      <h1>404 NOT FOUND</h1>
+      <input type="text" />
     </div>
   );
 }
