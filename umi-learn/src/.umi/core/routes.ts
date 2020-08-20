@@ -6,18 +6,37 @@ export function getRoutes() {
   const routes = [
   {
     "path": "/",
-    "exact": true,
-    "component": require('@/pages/index.js').default
-  },
-  {
-    "path": "/login",
-    "exact": true,
-    "component": require('@/pages/login.js').default
-  },
-  {
-    "path": "/page2",
-    "exact": true,
-    "component": require('@/pages/page2.js').default
+    "component": require('/Users/axtlive/Desktop/React/react-famliy-bucket/umi-learn/src/layouts/index.js').default,
+    "exact": false,
+    "routes": [
+      {
+        "path": "/",
+        "component": require('/Users/axtlive/Desktop/React/react-famliy-bucket/umi-learn/src/pages/index').default,
+        "title": "首页",
+        "Routes": [
+          "../routes/HandleTitle.js"
+        ],
+        "exact": true
+      },
+      {
+        "path": "/login",
+        "component": require('/Users/axtlive/Desktop/React/react-famliy-bucket/umi-learn/src/pages/login').default,
+        "title": "登录页",
+        "Routes": [
+          "../routes/HandleTitle.js"
+        ],
+        "exact": true
+      },
+      {
+        "path": "/welcome",
+        "component": require('/Users/axtlive/Desktop/React/react-famliy-bucket/umi-learn/src/pages/welcome').default,
+        "title": "欢迎页",
+        "Routes": [
+          "../routes/HandleTitle.js"
+        ],
+        "exact": true
+      }
+    ]
   }
 ];
 
