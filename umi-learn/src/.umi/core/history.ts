@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createBrowserHistory } from '/Users/axtlive/.config/yarn/global/node_modules/@umijs/runtime';
+import { createBrowserHistory } from '/Users/axtlive/Desktop/React/react-famliy-bucket/umi-learn/node_modules/@umijs/runtime';
 
 let options = {
   "basename": "/"

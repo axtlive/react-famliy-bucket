@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "umi": "^3.2.16"
+    "umi": "^3",
+    "@umijs/preset-react": "^1"
   }
 }
