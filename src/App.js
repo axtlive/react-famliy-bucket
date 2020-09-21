@@ -1,19 +1,40 @@
-import React, { Component } from "react";
-import UseAllStudent from "./customHook/useAllStudent";
-import UseTimer from './customHook/useTimer'
+import React, { useReducer } from "react";
+// import useReducer from "./useReducer";
 
-function Test() {
-  const res = UseAllStudent(Test);
-  UseTimer(()=>{console.log('Test组件的副作用操作')},1000)
-  console.log(res);
+function reducer(state, action) {
+  switch (action.type) {
+    case "increase":
+      return ++state;
+    case "decrease":
+      return --state;
+    default:
+      return state;
+  }
+}
+
+export default function App() {
+  const [n, dispatch] = useReducer(reducer, 0, args => {
+    console.log(args);
+    return 100;
+  });
+
   return (
     <div>
-      <h1>hello</h1>
+      <button
+        onClick={() => {
+          dispatch({ type: "decrease" });
+        }}
+      >
+        -
+      </button>
+      <span>{n}</span>
+      <button
+        onClick={() => {
+          dispatch({ type: "increase" });
+        }}
+      >
+        +
+      </button>
     </div>
   );
-}
-export default class App extends Component {
-  render() {
-    return <Test />;
-  }
 }
