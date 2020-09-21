@@ -161,5 +161,6 @@
         }
       ]
     ]
-  }
+  },
+  "proxy":"http://localhost:8900"
 }
