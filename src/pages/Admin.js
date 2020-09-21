@@ -1,29 +1,30 @@
-import React from "react";
-import { Route, Switch, Router } from "react-router-dom";
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import Layout from "../components/Layout";
-import Header from "../components/Header";
-import Menu from "../components/Menu";
-import Welcome from "./Welcome";
-import StudentList from "./student/StudentList";
-import StudentAdd from "./student/StudentAdd";
-import CourseList from "./courses/CourseList";
-import CourseAdd from "./courses/CourseAdd";
-import StudentDetail from "./student/StudentDetail";
+import Layout from '../components/Layout';
+import Header from '../components/Header';
+import Menu from '../components/Menu';
+import Welcome from './Welcome';
+import StudentList from './student/StudentList';
+import StudentAdd from './student/StudentAdd';
+import CourseList from './courses/CourseList';
+import CourseAdd from './courses/CourseAdd';
+import StudentDetail from './student/StudentDetail'
 
 export default function Admin() {
   return (
-    <Layout header={<Header />} aside={<Menu />}>
-      <Router>
-        <Switch>
-          <Route path="/" exact component={Welcome} />
-          <Route path="/students" exact component={StudentList} />
-          <Route path="/students/add" exact component={StudentAdd} />
-          <Route path="/students/:id" exact component={StudentDetail} />
-          <Route path="/courses" exact component={CourseList} />
-          <Route path="/courses/add" exact component={CourseAdd} />
-        </Switch>
-      </Router>
+    <Layout
+      header={<Header />}
+      aside={<Menu />}
+    >
+      <Switch>
+        <Route path='/' exact component={Welcome} />
+        <Route path='/students' exact component={StudentList} />
+        <Route path='/students/add' exact component={StudentAdd} />
+        <Route path='/students/:id' exact component={StudentDetail} />
+        <Route path='/courses' exact component={CourseList} />
+        <Route path='/courses/add' exact component={CourseAdd} />
+      </Switch>
     </Layout>
-  );
+  )
 }
