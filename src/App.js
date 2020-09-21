@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import Layout from './components/layout';
-import Login from './pages/Login.js';
-import Admin from './pages/Admin.js';
+import React, { Component } from "react";
+import UseAllStudent from "./customHook/useAllStudent";
+import UseTimer from './customHook/useTimer'
 
+function Test() {
+  const res = UseAllStudent(Test);
+  UseTimer(()=>{console.log('Test组件的副作用操作')},1000)
+  console.log(res);
+  return (
+    <div>
+      <h1>hello</h1>
+    </div>
+  );
+}
 export default class App extends Component {
-
   render() {
-    return (
-      <Router>
-        <Switch>
-          <Route path='/login' exact component={Login} />
-          <Route path='/' component={Admin} />
-        </Switch>
-      </Router>
-    )
+    return <Test />;
   }
 }
