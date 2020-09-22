@@ -1,40 +1,28 @@
-import React, { useReducer } from "react";
-// import useReducer from "./useReducer";
+import React, { useContext } from "react";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "increase":
-      return ++state;
-    case "decrease":
-      return --state;
-    default:
-      return state;
-  }
+const ctx = React.createContext();
+
+// 不使用useContext
+
+// function Test() {
+//   return (
+//     <ctx.Consumer>{val => <h1>Test的上下文的值是：{val}</h1>}</ctx.Consumer>
+//   );
+// }
+
+// 使用useContext
+
+function Test() {
+  const val = useContext(ctx);
+  return <h1>Test的上下文的值：{val}</h1>;
 }
 
 export default function App() {
-  const [n, dispatch] = useReducer(reducer, 0, args => {
-    console.log(args);
-    return 100;
-  });
-
   return (
     <div>
-      <button
-        onClick={() => {
-          dispatch({ type: "decrease" });
-        }}
-      >
-        -
-      </button>
-      <span>{n}</span>
-      <button
-        onClick={() => {
-          dispatch({ type: "increase" });
-        }}
-      >
-        +
-      </button>
+      <ctx.Provider value={100}>
+        <Test />
+      </ctx.Provider>
     </div>
   );
 }
